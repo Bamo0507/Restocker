@@ -111,6 +111,7 @@ Para regenerarlos, se corren los notebooks de `notebooks/` en orden con el kerne
 | `01_ddop_bakery.ipynb` | Cadena de panaderías alemana (Huber et al., 2019) | Entrenamiento y prueba con locales que el modelo no vio |
 | `02_french_bakery.ipynb` | Panadería francesa (Kaggle, *French Bakery Daily Sales*) | Entrenamiento |
 | `03_bread_basket.ipynb` | Cafetería y panadería de Edimburgo (OpenML, *The Bread Basket*) | Prueba final y negocio de la demostración en Restocker |
+| `04_unificacion.ipynb` | Los tres anteriores | Junta los datasets, agrega los feriados de cada país y marca la división en `unified.parquet` |
 
 ## Scripts de desarrollo
 

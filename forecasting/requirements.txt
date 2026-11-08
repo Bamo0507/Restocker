@@ -8,3 +8,4 @@ matplotlib==3.11.2
 pyarrow==26.0.1
 requests==2.34.2
 jupyter==1.1.1
+holidays==0.108
