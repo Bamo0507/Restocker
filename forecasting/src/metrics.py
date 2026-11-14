@@ -35,12 +35,24 @@ def evaluate(windows, prediction, naive_prediction, by=("split", "dataset")):
     Cada fila de la tabla cuenta predicciones: un mismo día aparece en hasta 7 ventanas, una por
     cada distancia a la que se predijo (de 1 a 7 días antes).
     `MAE relativo` es el MAE dividido entre el de "igual que la semana pasada" sobre los mismos
-    días: menos de 1 significa que mejora a esa línea base.
+    días: menos de 1 significa que mejora a esa línea base. Suma todos los errores juntos, así
+    que los productos que más venden pesan más.
+    `MASE` hace la misma división producto por producto (por serie) y promedia, así que cada
+    serie cuenta igual, venda 2 o 200 unidades al día. Como The Bread Basket no tiene periodo de
+    entrenamiento, la escala de cada serie es el error de "igual que la semana pasada" en los
+    mismos días evaluados, no en su historial.
     """
     pred, actual, mask = to_units(windows, prediction)
     naive, _, _ = to_units(windows, naive_prediction)
-    groups = windows.meta[list(by)].loc[windows.meta.index.repeat(windows.mask.shape[1])].reset_index(drop=True)
+    columns = list(dict.fromkeys(list(by) + ["store_id", "product_id"]))
+    groups = windows.meta[columns].loc[windows.meta.index.repeat(windows.mask.shape[1])].reset_index(drop=True)
     days = groups.assign(pred=pred, actual=actual, naive=naive)[mask]
+
+    def mase(frame):
+        errors = frame.assign(model_error=(frame["pred"] - frame["actual"]).abs(), naive_error=(frame["naive"] - frame["actual"]).abs())
+        per_series = errors.groupby(["store_id", "product_id"])[["model_error", "naive_error"]].mean()
+        ratio = per_series["model_error"] / per_series["naive_error"]
+        return float(ratio.replace(np.inf, np.nan).mean())  # se omiten series donde la línea base no se equivocó nunca
 
     def summarize(frame):
         return pd.Series({
@@ -49,9 +61,13 @@ def evaluate(windows, prediction, naive_prediction, by=("split", "dataset")):
             "RMSE": rmse(frame["pred"], frame["actual"]),
             "WAPE": wape(frame["pred"], frame["actual"]),
             "MAE relativo": mae(frame["pred"], frame["actual"]) / mae(frame["naive"], frame["actual"]),
+            "MASE": mase(frame),
         })
 
-    table = days.groupby(list(by)).apply(summarize, include_groups=False)
-    table.loc[("Total",) + ("",) * (len(by) - 1), :] = summarize(days)
+    rows = {key if len(by) > 1 else key[0]: summarize(frame) for key, frame in days.groupby(list(by))}
+    table = pd.DataFrame(rows).T
+    table.index.names = list(by)
+    total = ("Total",) + ("",) * (len(by) - 1) if len(by) > 1 else "Total"
+    table.loc[total, :] = summarize(days)
     table["predicciones"] = table["predicciones"].astype(int)
     return table
