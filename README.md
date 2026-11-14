@@ -112,6 +112,9 @@ Para regenerarlos, se corren los notebooks de `notebooks/` en orden con el kerne
 | `02_french_bakery.ipynb` | Panadería francesa (Kaggle, *French Bakery Daily Sales*) | Entrenamiento |
 | `03_bread_basket.ipynb` | Cafetería y panadería de Edimburgo (OpenML, *The Bread Basket*) | Prueba final y negocio de la demostración en Restocker |
 | `04_unificacion.ipynb` | Los tres anteriores | Junta los datasets, agrega los feriados de cada país y marca la división en `unified.parquet` |
+| `05_lineas_base.ipynb` | `unified.parquet` | Mide las líneas base (igual que la semana pasada y promedio de los mismos días) y guarda la iteración 0 en `results/` |
+
+El código que comparten los notebooks de modelado (ventanas, líneas base y métricas) está en `src/`.
 
 ## Scripts de desarrollo
 
