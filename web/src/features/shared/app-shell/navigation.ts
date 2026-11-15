@@ -1,4 +1,4 @@
-import { BookOpen, Boxes, History, Plus, Settings, type LucideIcon } from "lucide-react";
+import { BookOpen, Boxes, ChartLine, History, Plus, Settings, type LucideIcon } from "lucide-react";
 
 export type NavItem = {
   href: string;
@@ -10,6 +10,7 @@ export type NavItem = {
 // se dibuja aparte (botón central en móvil, botón destacado en la sidebar).
 export const sections: NavItem[] = [
   { href: "/", label: "Inventario", icon: Boxes },
+  { href: "/pronostico", label: "Pronóstico", icon: ChartLine },
   { href: "/historial", label: "Historial", icon: History },
   { href: "/catalogo", label: "Catálogo", icon: BookOpen },
   { href: "/ajustes", label: "Ajustes", icon: Settings },

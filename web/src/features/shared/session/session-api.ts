@@ -26,7 +26,8 @@ export async function getCurrentSession(): Promise<CurrentSession> {
   return {
     userId: auth.user.id,
     email,
-    fullName: profile.full_name,
+    // Un usuario creado fuera del registro (por ejemplo, desde el panel de Supabase) no tiene nombre.
+    fullName: profile.full_name.trim() || email,
     initials: initialsOf(profile.full_name, email),
     role: profile.role,
     business: profile.business,

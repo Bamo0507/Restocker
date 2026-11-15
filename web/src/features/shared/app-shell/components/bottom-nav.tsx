@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { captureAction, isActive, sections, type NavItem } from "@/features/shared/app-shell/navigation";
 import { cn } from "@/lib/utils";
 
-// Navegación móvil (< lg): dos secciones, Capturar al centro, dos secciones.
+// Navegación móvil (< lg): dos secciones, Capturar y el resto de secciones.
 export function BottomNav() {
   const pathname = usePathname();
   const [first, second, ...rest] = sections;
@@ -17,7 +17,7 @@ export function BottomNav() {
       aria-label="Secciones"
       className="fixed inset-x-0 bottom-0 z-40 border-t bg-card pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
-      <div className="mx-auto grid h-18 max-w-md grid-cols-5 items-center px-2">
+      <div className="mx-auto grid h-18 max-w-md grid-cols-6 items-center px-2">
         <Tab item={first} active={isActive(pathname, first.href)} />
         <Tab item={second} active={isActive(pathname, second.href)} />
         <Link
