@@ -5,4 +5,6 @@ export const queryKeys = {
   history: ["history", "list"] as const,
   members: ["members", "list"] as const,
   capture: ["capture", "context"] as const,
+  forecast: ["forecast", "board"] as const,
+  salesWindow: (end: string) => ["forecast", "sales-window", end] as const,
 };
