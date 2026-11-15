@@ -10,14 +10,6 @@ dependencies = [
   "holidays==0.108",
   "numpy==2.5.4",
   "pandas==3.1.1",
-  "torch==2.15.0",
 ]
-
-# torch solo para CPU: la versión normal trae librerías de GPU que no se usan y pesan gigas.
-[tool.uv.sources]
-torch = { index = "pytorch-cpu" }
-
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
+# Sin torch: pesa ~700 MB y Vercel acepta 500 MB por función. El modelo se sirve con NumPy
+# (src/numpy_model.py) a partir de los pesos exportados (scripts/export_weights.py).

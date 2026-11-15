@@ -1,10 +1,11 @@
-# El servicio solo necesita app.py, src/ y el checkpoint de la iteración 5.
+# El servicio solo necesita app.py, src/ y los pesos de la iteración 5 en NumPy.
 .venv
 data
 notebooks
 results
 models/*
-!models/05_lstm_cuantiles.pt
+!models/05_lstm_cuantiles.npz
 requirements.txt
+scripts
 **/__pycache__
 **/.ipynb_checkpoints

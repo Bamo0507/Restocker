@@ -15,16 +15,16 @@ from pathlib import Path
 import holidays
 import numpy as np
 import pandas as pd
-import torch
 
-from .models import LSTMForecaster
+from .numpy_model import NumpyForecaster
 from .value import quantile_choice
 from .windows import HORIZON, window_scale
 
 LOOKBACK = 28
 QUANTILES = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 MODEL_VERSION = "05_lstm_cuantiles"
-CHECKPOINT = Path(__file__).resolve().parent.parent / "models" / "05_lstm_cuantiles.pt"
+# Pesos del checkpoint 05_lstm_cuantiles.pt exportados con scripts/export_weights.py.
+WEIGHTS = Path(__file__).resolve().parent.parent / "models" / "05_lstm_cuantiles.npz"
 
 
 @dataclass
@@ -35,11 +35,9 @@ class Business:
     closed_dates: set[date] = field(default_factory=set)
 
 
-def load_model(checkpoint=CHECKPOINT):
-    """La red de la iteración 5 con la configuración que ganó la búsqueda (2 capas × 32)."""
-    model = LSTMForecaster(past_features=4, future_features=3, quantiles=len(QUANTILES), hidden=32, layers=2)
-    model.load_state_dict(torch.load(checkpoint, map_location="cpu"))
-    return model.eval()
+def load_model(weights=WEIGHTS):
+    """La red de la iteración 5 (2 capas × 32) servida con NumPy: mismo forward que en PyTorch."""
+    return NumpyForecaster(weights, horizon=HORIZON, quantiles=len(QUANTILES))
 
 
 def holiday_flags(days, business):
@@ -107,8 +105,7 @@ def forecast(model, sales, products, reference_date, business):
     if not used:
         return [], skipped
 
-    with torch.no_grad():
-        ladder = model(torch.from_numpy(past), torch.from_numpy(future)).numpy() * scale[:, None, None]
+    ladder = model(past, future) * scale[:, None, None]
     ladder = np.maximum.accumulate(np.clip(ladder, 0, None), axis=2)  # la escalera nunca baja
     ladder[:, future[0, :, 0] == 0, :] = 0.0                          # un día cerrado no vende
 
