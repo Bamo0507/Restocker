@@ -18,21 +18,30 @@ export type Database = {
         Row: {
           category: Database["public"]["Enums"]["business_category"]
           category_other: string | null
+          closed_weekdays: number[]
           created_at: string
+          holiday_country: string
+          holiday_subdivision: string | null
           id: string
           name: string
         }
         Insert: {
           category: Database["public"]["Enums"]["business_category"]
           category_other?: string | null
+          closed_weekdays?: number[]
           created_at?: string
+          holiday_country?: string
+          holiday_subdivision?: string | null
           id?: string
           name: string
         }
         Update: {
           category?: Database["public"]["Enums"]["business_category"]
           category_other?: string | null
+          closed_weekdays?: number[]
           created_at?: string
+          holiday_country?: string
+          holiday_subdivision?: string | null
           id?: string
           name?: string
         }
@@ -317,6 +326,99 @@ export type Database = {
           },
         ]
       }
+      closed_days: {
+        Row: {
+          business_id: string
+          closed_on: string
+          created_at: string
+          created_by: string | null
+        }
+        Insert: {
+          business_id: string
+          closed_on: string
+          created_at?: string
+          created_by?: string | null
+        }
+        Update: {
+          business_id?: string
+          closed_on?: string
+          created_at?: string
+          created_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "closed_days_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "closed_days_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      forecasts: {
+        Row: {
+          business_id: string
+          forecast_date: string
+          generated_at: string
+          horizon: number
+          id: string
+          median: number
+          model_version: string
+          product_id: string
+          q_star: number | null
+          quantiles: Json
+          recommended_quantity: number | null
+        }
+        Insert: {
+          business_id: string
+          forecast_date: string
+          generated_at?: string
+          horizon: number
+          id?: string
+          median: number
+          model_version: string
+          product_id: string
+          q_star?: number | null
+          quantiles: Json
+          recommended_quantity?: number | null
+        }
+        Update: {
+          business_id?: string
+          forecast_date?: string
+          generated_at?: string
+          horizon?: number
+          id?: string
+          median?: number
+          model_version?: string
+          product_id?: string
+          q_star?: number | null
+          quantiles?: Json
+          recommended_quantity?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "forecasts_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "forecasts_product_id_business_id_fkey"
+            columns: ["product_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id", "business_id"]
+          },
+        ]
+      }
       invitations: {
         Row: {
           business_id: string
@@ -484,9 +586,12 @@ export type Database = {
           id: string
           image_path: string | null
           is_active: boolean
+          made_in_advance: boolean
           minimum_quantity: number
           name: string
           unit: Database["public"]["Enums"]["product_unit"]
+          unit_cost: number | null
+          unit_price: number | null
         }
         Insert: {
           business_id: string
@@ -496,9 +601,12 @@ export type Database = {
           id?: string
           image_path?: string | null
           is_active?: boolean
+          made_in_advance?: boolean
           minimum_quantity?: number
           name: string
           unit?: Database["public"]["Enums"]["product_unit"]
+          unit_cost?: number | null
+          unit_price?: number | null
         }
         Update: {
           business_id?: string
@@ -508,9 +616,12 @@ export type Database = {
           id?: string
           image_path?: string | null
           is_active?: boolean
+          made_in_advance?: boolean
           minimum_quantity?: number
           name?: string
           unit?: Database["public"]["Enums"]["product_unit"]
+          unit_cost?: number | null
+          unit_price?: number | null
         }
         Relationships: [
           {
@@ -556,6 +667,30 @@ export type Database = {
       }
     }
     Views: {
+      daily_sales: {
+        Row: {
+          business_id: string | null
+          product_id: string | null
+          sale_date: string | null
+          sold: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "movements_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       history_feed: {
         Row: {
           business_id: string | null
@@ -633,6 +768,7 @@ export type Database = {
       }
       current_business_id: { Args: never; Returns: string }
       discard_capture: { Args: { p_capture_id: string }; Returns: undefined }
+      forecast_readiness: { Args: never; Returns: Json }
       is_business_admin: { Args: never; Returns: boolean }
       register_manual_movement: {
         Args: {
