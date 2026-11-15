@@ -1,0 +1,10 @@
+# El servicio solo necesita app.py, src/ y el checkpoint de la iteración 5.
+.venv
+data
+notebooks
+results
+models/*
+!models/05_lstm_cuantiles.pt
+requirements.txt
+**/__pycache__
+**/.ipynb_checkpoints

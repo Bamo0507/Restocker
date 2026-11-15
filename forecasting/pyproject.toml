@@ -1,0 +1,23 @@
+# Dependencias del servicio de pronóstico (app.py), las que se instalan en Vercel.
+# Los notebooks usan requirements.txt.
+[project]
+name = "restocker-forecasting"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.163.0",
+  "httpx==0.28.1",
+  "holidays==0.108",
+  "numpy==2.5.4",
+  "pandas==3.1.1",
+  "torch==2.15.0",
+]
+
+# torch solo para CPU: la versión normal trae librerías de GPU que no se usan y pesan gigas.
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
