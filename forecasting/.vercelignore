@@ -7,5 +7,6 @@ models/*
 !models/05_lstm_cuantiles.npz
 requirements.txt
 scripts
+explainableAi
 **/__pycache__
 **/.ipynb_checkpoints
