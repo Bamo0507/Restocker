@@ -7,7 +7,7 @@ Además, un LSTM entrenado con ventas de panaderías pronostica cuánto se va a 
 - **Aplicación:** https://restocker-three.vercel.app
 - **API de pronóstico:** https://restocker-forecast.vercel.app
 
-Proyecto 3 del curso CC3092 Deep Learning y Sistemas Inteligentes, Universidad del Valle de Guatemala.
+Proyecto 3 y proyecto final del curso CC3092 Deep Learning y Sistemas Inteligentes, Universidad del Valle de Guatemala. Todo lo del proyecto final (el pronóstico de demanda) está en la rama [`final`](https://github.com/Bamo0507/Restocker/tree/final); la rama `main` corresponde a la entrega del Proyecto 3.
 
 ## Estructura
 

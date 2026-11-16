@@ -1,16 +1,16 @@
 product_id,producto,tipo,precio_gbp,costo_pct,fuente_precio,fuente_costo
-bread_basket_bread,Bread,Pan,2.00,0.25,Estimado (piso: ONS hogaza de supermercado £1.00-1.09),Guías de costeo de panadería: pan 15-30 %
-bread_basket_farm_house,Farm House,Pan,2.20,0.25,Estimado (mismo piso ONS),Guías de costeo de panadería: pan 15-30 %
+bread_basket_bread,Bread,Pan,2.00,0.25,Estimado (piso: ONS hogaza de supermercado £1.00-1.09),Estimado
+bread_basket_farm_house,Farm House,Pan,2.20,0.25,Estimado (mismo piso ONS),Estimado
 bread_basket_pastry,Pastry,Bollería,1.80,0.30,Menús y cadenas ajustados a 2017 con el índice ONS de cafeterías,Sage y Xlent Foods: bollería 25-30 %
 bread_basket_medialuna,Medialuna,Bollería,1.20,0.30,Estimado (más pequeña que un croissant),Sage y Xlent Foods: bollería 25-30 %
 bread_basket_scandinavian,Scandinavian,Bollería,2.20,0.30,Menús y proveedores ajustados a 2017 con el índice ONS de cafeterías,Sage y Xlent Foods: bollería 25-30 %
 bread_basket_cake,Cake,Pastel,2.30,0.28,Menús y proveedores ajustados a 2017 con el índice ONS de cafeterías,Sage y Xlent Foods: pasteles 25-30 %
-bread_basket_brownie,Brownie,Pastel,1.80,0.28,Menús y proveedores ajustados a 2017 con el índice ONS de cafeterías,Booker: receta de brownie 27-28 %
+bread_basket_brownie,Brownie,Pastel,1.80,0.28,Menús y proveedores ajustados a 2017 con el índice ONS de cafeterías,Sage y Xlent Foods: pasteles 25-30 %
 bread_basket_muffin,Muffin,Pastel,1.80,0.28,ONS Escocia 2016-17: muffin o pastel individual,Sage y Xlent Foods: pasteles 25-30 %
-bread_basket_scone,Scone,Pastelería,2.00,0.20,Menús y proveedores ajustados a 2017 con el índice ONS de cafeterías,Booker: receta de scone 16 %
-bread_basket_cookies,Cookies,Pastelería,1.20,0.30,Estimado,Booker: receta de galleta 29.5 %
+bread_basket_scone,Scone,Pastelería,2.00,0.20,Menús y proveedores ajustados a 2017 con el índice ONS de cafeterías,Estimado
+bread_basket_cookies,Cookies,Pastelería,1.20,0.30,Estimado,Estimado
 bread_basket_alfajores,Alfajores,Pastelería,1.50,0.30,Estimado,Estimado (igual que bollería y galletas)
 bread_basket_truffles,Truffles,Dulce,1.20,0.30,Estimado,Estimado (igual que bollería y galletas)
 bread_basket_fudge,Fudge,Dulce,1.50,0.30,Estimado,Estimado (igual que bollería y galletas)
 bread_basket_sandwich,Sandwich,Comida preparada,2.05,0.35,ONS Escocia 2016-17: sándwich frío para llevar,Sage y Xlent Foods: sándwiches 35-40 %
-bread_basket_soup,Soup,Comida preparada,3.00,0.25,Menús y Booker ajustados a 2017 con el índice ONS de cafeterías,Booker: receta de sopa 22.6 %
+bread_basket_soup,Soup,Comida preparada,3.00,0.25,Menús ajustados a 2017 con el índice ONS de cafeterías,Estimado

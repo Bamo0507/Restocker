@@ -46,6 +46,9 @@ next-env.d.ts
 # notas de trabajo locales (no se versionan)
 /docs/decisiones-captura.md
 
+# presentación final
+/docs/presentacion/
+
 # python (forecasting)
 .venv/
 __pycache__/
