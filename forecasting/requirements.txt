@@ -12,3 +12,6 @@ holidays==0.108
 
 # Entrenamiento de las redes
 torch==2.15.0
+
+# Explicabilidad (laboratorio 10)
+captum==0.9.0
