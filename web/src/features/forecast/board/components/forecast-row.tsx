@@ -4,7 +4,14 @@ import { ChevronDown } from "lucide-react";
 import { ProductThumb } from "@/features/shared/components/product-thumb";
 import { cn } from "@/lib/utils";
 import type { ForecastEntry } from "../../shared/types/forecast";
-import { formatCoverage, formatMoney, formatRatio, formatUnits, nearestQuantile } from "../utils/format-forecast";
+import {
+  formatCoverage,
+  formatMoney,
+  formatRange,
+  formatRatio,
+  formatUnits,
+  nearestQuantile,
+} from "../utils/format-forecast";
 
 // Un producto en el día elegido. Con recomendación: "Haz N" y qué tantos días alcanza (lo que el
 // modelo optimiza y lo que quedó calibrado). Sin ella (café, té): el día típico, que es la mediana.
@@ -18,7 +25,7 @@ export function ForecastRow({
   expanded: boolean;
   onToggle: () => void;
 }) {
-  const { product, median, quantiles, recommended, qStar } = entry;
+  const { product, median, quantiles, interval, recommended, qStar } = entry;
   const step = qStar !== null ? nearestQuantile(quantiles, qStar) : null;
   const compact = recommended === null;
 
@@ -33,6 +40,7 @@ export function ForecastRow({
         <ProductThumb name={product.name} imageUrl={product.imageUrl} className={cn(compact && "size-10")} />
         <div className="flex min-w-0 flex-1 flex-col">
           <span className="truncate font-medium">{product.name}</span>
+          {interval && <span className="text-sm tabular-nums">Se esperan {formatRange(interval)}</span>}
           <span className="text-sm text-muted-foreground">
             {step !== null ? `Alcanza ${formatCoverage(step)}` : `Día típico: unas ${formatUnits(median)}`}
           </span>
@@ -53,6 +61,12 @@ export function ForecastRow({
 
       {expanded && (
         <div className="flex flex-col gap-3 border-t px-4 py-3 text-sm">
+          {interval && (
+            <p>
+              <span className="font-medium">Se esperan vender {formatRange(interval)}.</span> 7 de cada 10 días
+              la venta queda entre {formatUnits(interval.low)} y {formatUnits(interval.high)}.
+            </p>
+          )}
           <p>
             <span className="font-medium">Día típico: {formatUnits(median)}.</span> La mitad de los días se vende menos y
             la otra mitad más.

@@ -23,6 +23,8 @@ export type ForecastEntry = {
   median: number;
   // Escalera de cuantiles: { "0.5": 2.1, …, "0.9": 4.9 }.
   quantiles: Record<string, number>;
+  // Rango que se espera vender 7 de cada 10 días. Vacío en pronósticos generados antes del intervalo.
+  interval: { low: number; high: number } | null;
   recommended: number | null;
   qStar: number | null;
 };

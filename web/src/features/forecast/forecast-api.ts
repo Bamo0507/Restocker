@@ -26,7 +26,7 @@ export async function getForecastBoard(): Promise<ForecastBoard> {
     supabase
       .from("forecasts")
       .select(
-        "forecast_date, horizon, median, quantiles, recommended_quantity, q_star, model_version, generated_at, product:products(id, name, image_path, made_in_advance, unit_price, unit_cost)",
+        "forecast_date, horizon, median, quantiles, interval_low, interval_high, recommended_quantity, q_star, model_version, generated_at, product:products(id, name, image_path, made_in_advance, unit_price, unit_cost)",
       )
       .order("forecast_date")
       .order("median", { ascending: false }),
@@ -60,6 +60,10 @@ export async function getForecastBoard(): Promise<ForecastBoard> {
       horizon: row.horizon,
       median: Number(row.median),
       quantiles: row.quantiles as Record<string, number>,
+      interval:
+        row.interval_low === null || row.interval_high === null
+          ? null
+          : { low: Number(row.interval_low), high: Number(row.interval_high) },
       recommended: row.recommended_quantity === null ? null : Number(row.recommended_quantity),
       qStar: row.q_star === null ? null : Number(row.q_star),
     };

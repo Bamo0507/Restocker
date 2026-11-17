@@ -23,6 +23,10 @@ from .windows import HORIZON, window_scale
 LOOKBACK = 28
 QUANTILES = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 MODEL_VERSION = "05_lstm_cuantiles"
+# Intervalo conformal del 70 % (results/07_intervalo_margenes.csv): margen por nivel de venta diaria
+# (escala de la ventana) para menos de 3, 3 a 6, 6 a 15, 15 a 50 y más de 50 unidades.
+INTERVAL_LEVELS = [3, 6, 15, 50]
+INTERVAL_MARGINS = np.array([0.5905, 0.5233, 0.4144, 0.3045, 0.2368])
 # Pesos del checkpoint 05_lstm_cuantiles.pt exportados con scripts/export_weights.py.
 WEIGHTS = Path(__file__).resolve().parent.parent / "models" / "05_lstm_cuantiles.npz"
 
@@ -95,6 +99,17 @@ def build_inputs(sales, product_ids, reference_date, business):
     )
 
 
+def prediction_interval(median, scale):
+    """Intervalo del 70 % alrededor de la mediana, en unidades enteras (notebook 07, sección 13).
+
+    El margen es una proporción de la escala de la ventana que depende de su nivel de ventas.
+    """
+    # Centro y margen se redondean por separado para que la app muestre "17 ± 6" y el rango cuadre (11 a 23).
+    center = np.round(median)
+    margin = np.round(INTERVAL_MARGINS[np.digitize(scale, INTERVAL_LEVELS)][:, None] * scale[:, None])
+    return np.maximum(0, center - margin), center + margin
+
+
 def forecast(model, sales, products, reference_date, business):
     """Filas para la tabla forecasts (sin business_id) y los productos sin historia suficiente.
 
@@ -108,6 +123,8 @@ def forecast(model, sales, products, reference_date, business):
     ladder = model(past, future) * scale[:, None, None]
     ladder = np.maximum.accumulate(np.clip(ladder, 0, None), axis=2)  # la escalera nunca baja
     ladder[:, future[0, :, 0] == 0, :] = 0.0                          # un día cerrado no vende
+
+    low, high = prediction_interval(ladder[:, :, 0], scale)
 
     info = products.loc[used]
     price, cost = info["unit_price"].astype(float), info["unit_cost"].astype(float)
@@ -124,6 +141,8 @@ def forecast(model, sales, products, reference_date, business):
                 "horizon": h + 1,
                 "median": round(float(ladder[i, h, 0]), 3),
                 "quantiles": {str(q): round(float(ladder[i, h, k]), 3) for k, q in enumerate(QUANTILES)},
+                "interval_low": float(low[i, h]),
+                "interval_high": float(high[i, h]),
                 "recommended_quantity": float(recommended[i, h]) if has_value.iloc[i] else None,
                 "q_star": round(float(q_star.iloc[i]), 3) if has_value.iloc[i] else None,
                 "model_version": MODEL_VERSION,

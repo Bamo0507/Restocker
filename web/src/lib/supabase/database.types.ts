@@ -369,6 +369,8 @@ export type Database = {
           generated_at: string
           horizon: number
           id: string
+          interval_high: number | null
+          interval_low: number | null
           median: number
           model_version: string
           product_id: string
@@ -382,6 +384,8 @@ export type Database = {
           generated_at?: string
           horizon: number
           id?: string
+          interval_high?: number | null
+          interval_low?: number | null
           median: number
           model_version: string
           product_id: string
@@ -395,6 +399,8 @@ export type Database = {
           generated_at?: string
           horizon?: number
           id?: string
+          interval_high?: number | null
+          interval_low?: number | null
           median?: number
           model_version?: string
           product_id?: string

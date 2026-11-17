@@ -4,7 +4,30 @@
     {
       "name": "restocker-dev",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeArgs": [
+        "dev"
+      ],
+      "cwd": "web",
+      "port": 3000
+    },
+    {
+      "name": "forecast-service",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "set -a; . ../web/.env; set +a; exec .venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8000"
+      ],
+      "cwd": "forecasting",
+      "port": 8000
+    },
+    {
+      "name": "restocker-dev-local-forecast",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "FORECAST_SERVICE_URL=http://127.0.0.1:8000",
+        "pnpm",
+        "dev"
+      ],
       "cwd": "web",
       "port": 3000
     }

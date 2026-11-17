@@ -52,3 +52,12 @@ export function formatRatio(ratio: number) {
   const rounded = Math.round(ratio * 10) / 10;
   return `${Number.isInteger(rounded) ? rounded : rounded.toLocaleString("es-GT")} veces`;
 }
+
+// El rango que se espera vender alrededor del día típico: "17 ± 6". El servicio arma el rango como
+// centro ± margen en unidades enteras, así que el centro es el punto medio. Si el límite inferior quedó
+// en 0, "1 ± 2" sugeriría ventas negativas: se muestra "hasta 3".
+export function formatRange(interval: { low: number; high: number }) {
+  if (interval.low === 0) return `hasta ${formatUnits(interval.high)}`;
+  const center = (interval.low + interval.high) / 2;
+  return `${formatUnits(center)} ± ${formatUnits(interval.high - center)}`;
+}
