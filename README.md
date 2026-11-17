@@ -7,7 +7,29 @@ Además, un LSTM entrenado con ventas de panaderías pronostica cuánto se va a 
 - **Aplicación:** https://restocker-three.vercel.app
 - **API de pronóstico:** https://restocker-forecast.vercel.app
 
-Proyecto 3 y proyecto final del curso CC3092 Deep Learning y Sistemas Inteligentes, Universidad del Valle de Guatemala. Todo lo del proyecto final (el pronóstico de demanda) está en la rama [`final`](https://github.com/Bamo0507/Restocker/tree/final); la rama `main` corresponde a la entrega del Proyecto 3.
+Proyecto 3 y proyecto final del curso CC3092 Deep Learning y Sistemas Inteligentes, Universidad del Valle de Guatemala. Todo lo del proyecto final (el pronóstico de demanda) está en la rama [`final`](https://github.com/Bamo0507/Restocker/tree/final); la rama `main` corresponde a la entrega del Proyecto 3. El laboratorio 10 está en la rama `lab_10` (ver [Laboratorio 10 · Explicabilidad](#laboratorio-10--explicabilidad)).
+
+## Laboratorio 10 · Explicabilidad
+
+El laboratorio 10 aplica Integrated Gradients (con Captum) sobre el modelo final del pronóstico, sin volver a entrenarlo, y está en la rama [`lab_10`](https://github.com/Bamo0507/Restocker/tree/lab_10), creada a partir de `final`.
+
+| Archivo | Qué contiene |
+| :- | :- |
+| [`forecasting/explainableAi/explicabilidad.ipynb`](forecasting/explainableAi/explicabilidad.ipynb) | Notebook comentado que carga el modelo, calcula las explicaciones y regenera todas las figuras y tablas del informe |
+| [`forecasting/explainableAi/figuras/`](forecasting/explainableAi/figuras) | Las figuras que genera el notebook |
+| [`forecasting/explainableAi/laboratorio_10.md`](forecasting/explainableAi/laboratorio_10.md) | El informe completo: investigación, selección del método, implementación, interpretación y discusión |
+
+Para correrlo se necesita Python 3.12 y [uv](https://docs.astral.sh/uv/). El entorno es el mismo del pronóstico, y `requirements.txt` ya incluye `captum==0.9.0`:
+
+```bash
+cd forecasting
+uv venv --python 3.12 .venv
+uv pip install --python .venv -r requirements.txt
+cd explainableAi
+../.venv/bin/jupyter nbconvert --to notebook --execute --inplace explicabilidad.ipynb
+```
+
+No necesita Supabase ni descargar nada, porque los datos procesados y los pesos del modelo ya vienen en el repositorio. El notebook usa la semilla 123, comprueba al inicio que el modelo reproduce el WAPE del proyecto final (41.33 %) y se detiene si no lo hace.
 
 ## Estructura
 
